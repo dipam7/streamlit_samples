@@ -1,41 +1,3 @@
-# import streamlit as st
-# from PIL import Image, ImageDraw
-# import torchvision.transforms as T
-# import torchvision
-# import torch
-
-# st.write("# Wheat detection")
-
-# st.set_option('deprecation.showfileUploaderEncoding', False)
-# uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "png"])
-# if uploaded_file is not None:
-#     img = Image.open(uploaded_file).convert("RGB")
-#     imageLocation = st.empty()
-#     imageLocation.image(img, use_column_width=True)
-
-#     img = T.ToTensor()(img)
-#     model = torch.load('../models/model.pth', map_location = 'cpu')
-#     model.eval()
-#     output = get_prediction(model, img)
-#     boxes,scores = post_process(output, nms_thresh = nms)
-#     img = plot_op(img, boxes, scores)
-#     imageLocation.image(img, use_column_width=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import streamlit as st
 import torch
 import torchvision
@@ -70,6 +32,7 @@ def plot_op(img, boxes, scores):
     return vsample
 
 st.write("# Wheat detection")
+nms = st.sidebar.slider('nms', 0.0, 1.0, 0.1)
 st.set_option('deprecation.showfileUploaderEncoding', False)
 uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "png"])
 if uploaded_file is not None:
@@ -82,7 +45,6 @@ if uploaded_file is not None:
     model.eval()
     output = get_prediction(model, img)
 
-    nms = st.sidebar.slider('nms', 0.0, 1.0, 0.1)
     boxes,scores = post_process(output, nms_thresh = nms)
 
     img = plot_op(img, boxes, scores)
