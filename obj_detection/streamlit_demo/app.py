@@ -37,10 +37,10 @@
 
 
 import streamlit as st
-from PIL import Image, ImageDraw
-import torchvision.transforms as T
-import torchvision
 import torch
+import torchvision
+import torchvision.transforms as T
+from PIL import Image, ImageDraw
 
 device = 'cpu'
 
