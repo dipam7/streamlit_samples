@@ -47,8 +47,8 @@ if back is not None and over is not None:
     bk = back.name
     ov = over.name
     op_vid = f"overlay_op.mp4"
-    print(bk, ov)
-    os.system('ls')
+    st.markdown(bk, ov)
+    os.system('ls video_overlay')
     # overlay_dict = get_mapping_dict(odist_x, odist_y)
     # cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
     # op = subprocess.check_output(cmd, shell=True)
