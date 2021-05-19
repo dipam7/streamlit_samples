@@ -1,6 +1,17 @@
 import streamlit as st
 import subprocess
 
+import os
+import base64
+
+def get_binary_file_downloader_html(bin_file, file_label='File'):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    bin_str = base64.b64encode(data).decode()
+    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download {file_label}</a>'
+    return href
+
+
 def get_mapping_dict(od_x: int, od_y: int):
     overlay_mapping = {
         "top-right": f"main_w-(overlay_w+{od_x}):{od_y}",
@@ -10,7 +21,12 @@ def get_mapping_dict(od_x: int, od_y: int):
     }
     return overlay_mapping
 
-positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+st.markdown("# Overlay one video over another")
+st.markdown('A utility tool to create lectures using screen recording and a video of a person talking.')
+st.markdown('Just choose a background and an overlay video and adjust parameters to place it where you like.')
+st.markdown('Once the output is generated a download option will appear at the bottom.')
+
+positions = ['top-right', 'top-left', 'bottom-right', 'bottom-left']
 
 st.sidebar.title("Select options")
 pos = st.sidebar.selectbox("Select position: ", positions)
@@ -18,8 +34,8 @@ pos = st.sidebar.selectbox("Select position: ", positions)
 h_label = "Horizontal distance of the overlayed video from left or right depending on placement"
 v_label = "Vertical distance of the overlayed video from top or bottom depending on placement"
 
-odist_x = st.sidebar.number_input(h_label, value = 10)
-odist_y = st.sidebar.number_input(v_label, value = 10)
+odist_x = st.sidebar.number_input(h_label, value = 50)
+odist_y = st.sidebar.number_input(v_label, value = 50)
 
 scale_x = st.sidebar.number_input("Width of overlayed video", value = 400)
 scale_y = st.sidebar.number_input("height of overlayed video", value = -1)
@@ -39,3 +55,5 @@ if back is not None and over is not None:
     video_bytes = video_file.read()
 
     st.video(video_bytes)
+
+    st.markdown(get_binary_file_downloader_html(f'{op_vid}', 'Video'), unsafe_allow_html=True)
