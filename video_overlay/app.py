@@ -48,14 +48,17 @@ if back is not None and over is not None:
     ov = over.name
     op_vid = f"overlay_op.mp4"
     st.markdown(f'{bk} {ov}')
-    os.system('ls video_overlay')
-    os.system('cat /home/appuser/venv/lib/python3.7/site-packages/streamlit/script_runner.py')
     # overlay_dict = get_mapping_dict(odist_x, odist_y)
     # cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
     # op = subprocess.check_output(cmd, shell=True)
-    # video_file = open(op_vid, 'rb')
-    # video_bytes = video_file.read()
+    video_file = open(bk, 'rb')
+    video_bytes = video_file.read()
 
-    # st.video(video_bytes)
+    st.video(video_bytes)
+
+    video_file = open(ov, 'rb')
+    video_bytes = video_file.read()
+
+    st.video(video_bytes)
 
     # st.markdown(get_binary_file_downloader_html(f'{op_vid}', 'Video'), unsafe_allow_html=True)
