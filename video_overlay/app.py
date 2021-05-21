@@ -1,6 +1,7 @@
 import streamlit as st
 import subprocess
 import tempfile
+import time
 
 import os
 import base64
@@ -49,8 +50,13 @@ if back is not None and over is not None:
     tfile.write(back.read())
     tfile.write(over.read())
 
-    bk = back.name
-    ov = over.name
+    time.sleep(10)
+
+    bk = f'../back.name'
+    ov = f'../over.name'
+
+    os.system('ls')
+
     op_vid = f"overlay_op.mp4"
     st.markdown(f'{bk} {ov}')
     overlay_dict = get_mapping_dict(odist_x, odist_y)
