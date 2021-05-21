@@ -1,5 +1,6 @@
 import streamlit as st
 import subprocess
+import tempfile
 
 import os
 import base64
@@ -44,21 +45,21 @@ back = st.file_uploader("Choose background video", type=["mp4", "mov"])
 over = st.file_uploader("Choose overlay video", type=["mp4", "mov"])
 
 if back is not None and over is not None:
+    tfile = tempfile.NamedTemporaryFile(delete=False)
+    tfile.write(back.read())
+    tfile.write(over.read())
+
     bk = back.name
     ov = over.name
     op_vid = f"overlay_op.mp4"
     st.markdown(f'{bk} {ov}')
-    # overlay_dict = get_mapping_dict(odist_x, odist_y)
-    # cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
-    # op = subprocess.check_output(cmd, shell=True)
-    video_file = open(bk, 'rb')
+    overlay_dict = get_mapping_dict(odist_x, odist_y)
+    cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
+    op = subprocess.check_output(cmd, shell=True)
+
+    video_file = open(op_vid, 'rb')
     video_bytes = video_file.read()
 
     st.video(video_bytes)
 
-    video_file = open(ov, 'rb')
-    video_bytes = video_file.read()
-
-    st.video(video_bytes)
-
-    # st.markdown(get_binary_file_downloader_html(f'{op_vid}', 'Video'), unsafe_allow_html=True)
+    st.markdown(get_binary_file_downloader_html(f'{op_vid}', 'Video'), unsafe_allow_html=True)
