@@ -51,10 +51,10 @@ if back is not None and over is not None:
     tfile.write(over.read())
 
     time.sleep(10)
-    os.system('ls')
+    os.system('ls video_overlay')
 
-    bk = f'../{back.name}'
-    ov = f'../{over.name}'
+    bk = back.name
+    ov = over.name
 
     op_vid = f"overlay_op.mp4"
     st.markdown(f'{bk} {ov}')
