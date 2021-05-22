@@ -35,7 +35,7 @@ st.markdown("""
     # Overlay one video over another
     A utility tool to create lectures using screen recording and a video of a person talking.<br>
     Just choose a background and an overlay video and adjust parameters to place it where you like.<br>
-    Once the output is generated a download option will appear at the bottom.
+    Once the output is generated right click to Download the output.
     """,
     unsafe_allow_html=True)
 
@@ -64,22 +64,22 @@ if back is not None and over is not None:
     with open(ov, mode='wb') as f:
         f.write(over.read())
 
-    st.markdown(f"""
-    ### Files
-    - {bk}
-    - {ov}
-    """,
-    unsafe_allow_html=True)
+    # st.markdown(f"""
+    # ### Files
+    # - {bk}
+    # - {ov}
+    # """,
+    # unsafe_allow_html=True)
 
     op_vid = "overlay_op.mp4"
     overlay_dict = get_mapping_dict(odist_x, odist_y)
 
-    if st.button('Run overlay merge process'):
-        with st.spinner('Wait for ffmpeg to process...'):
+    if st.button('Overlay videos'):
+        with st.spinner('Processing videos...'):
             cmd = f'ffmpeg -i {bk} -i {ov} -map 0:0 -map 1:1 -vf "movie={ov}, scale={scale_x}:{scale_y} [inner]; [in][inner] overlay={overlay_dict[pos]} [out]" {op_vid} -y'
             op = subprocess.check_output(cmd, shell=True)
 
             st.video(op_vid)
             st.balloons()
-            download_button('videodownload.html')
+            # download_button('videodownload.html')
             # st.markdown(get_binary_file_downloader_html(op_vid, 'Video'), unsafe_allow_html=True)
